@@ -1,6 +1,8 @@
 import { type FrameRequest, getFrameMessage, getFrameHtmlResponse } from "@coinbase/onchainkit/frame"
 import { type NextRequest, NextResponse } from "next/server"
 
+type FrameButton = { label: string; action?: string; target?: string }
+
 async function getResponse(req: NextRequest): Promise<NextResponse> {
   const body: FrameRequest = await req.json()
   const { isValid, message } = await getFrameMessage(body, { neynarApiKey: "NEYNAR_ONCHAIN_KIT" })
@@ -25,7 +27,7 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
 
   const newState = { ...state }
   let imageUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/api/frame/image`
-  let buttons = []
+  let buttons: FrameButton[] = []
 
   // Handle different game phases
   switch (state.gamePhase) {
